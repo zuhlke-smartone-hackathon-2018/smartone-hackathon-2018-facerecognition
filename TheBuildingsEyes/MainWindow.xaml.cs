@@ -56,6 +56,13 @@ namespace TheBuildingsEyes
 
             // Create local face detector. 
             _localFaceDetector.Load("Data/haarcascade_frontalface_alt2.xml");
+
+            StopButton.Visibility = Visibility.Collapsed;
+        }
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            IconHelper.RemoveIcon(this);
         }
 
         private void NewFrameHandler(object s, FrameGrabber<LiveCameraResult>.NewFrameEventArgs e)
@@ -81,7 +88,7 @@ namespace TheBuildingsEyes
             {
                 if (e.TimedOut)
                 {
-                    MessageArea.Text = "API call timed out.";
+                    //MessageArea.Text = "API call timed out.";
                 }
                 else if (e.Exception != null)
                 {
@@ -105,7 +112,7 @@ namespace TheBuildingsEyes
                         apiName = "Computer Vision";
                         message = visionEx.Error.Message;
                     }
-                    MessageArea.Text = string.Format("{0} API call failed on frame {1}. Exception: {2}", apiName, e.Frame.Metadata.Index, message);
+                    //MessageArea.Text = string.Format("{0} API call failed on frame {1}. Exception: {2}", apiName, e.Frame.Metadata.Index, message);
                 }
                 else
                 {
@@ -125,9 +132,7 @@ namespace TheBuildingsEyes
             // Reset data
             await Dispatcher.BeginInvoke((Action)(() =>
              {
-                 NameTextBlock.Text = "";
-                 FloorTextBlock.Text = "";
-                 StatusTextBlock.Text = "";
+
              }));
 
             // Encode image. 
@@ -148,9 +153,7 @@ namespace TheBuildingsEyes
                     Console.WriteLine("No one identified");
                     await Dispatcher.BeginInvoke((Action)(() =>
                      {
-                         NameTextBlock.Text = "N/A";
-                         FloorTextBlock.Text = "22";
-                         StatusTextBlock.Text = "Guest";
+                         VisitorImage.Visibility = Visibility.Visible;
                      }));
                     try
                     {
@@ -172,9 +175,8 @@ namespace TheBuildingsEyes
                         colorToUse = new Color { R = 0, G = 255, B = 0, A = 255 };
                         await Dispatcher.BeginInvoke((Action)(() =>
                          {
-                             NameTextBlock.Text = "Sascha";
-                             FloorTextBlock.Text = "22";
-                             StatusTextBlock.Text = "Resident";
+                             ResidentImage.Visibility = Visibility.Visible;
+                             PackageImage.Visibility = Visibility.Visible;
                          }));
                         try
                         {
@@ -217,6 +219,9 @@ namespace TheBuildingsEyes
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            StopButton.Visibility = Visibility.Visible;
+            StartButton.Visibility = Visibility.Collapsed;
+
             // Create API clients. 
             _faceClient = new FaceAPI.FaceServiceClient(faceApiKey, faceApiHost);
             _visionClient = new VisionAPI.VisionServiceClient(visionApiKey, visionApiHost);
@@ -228,7 +233,7 @@ namespace TheBuildingsEyes
             _grabber.AnalysisFunction = AnalysisFunction;
 
             // Reset message. 
-            MessageArea.Text = "";
+            //MessageArea.Text = "";
 
             // Record start time, for auto-stop
             _startTime = DateTime.Now;
@@ -239,6 +244,8 @@ namespace TheBuildingsEyes
         private async void StopButton_Click(object sender, RoutedEventArgs e)
         {
             await _grabber.StopProcessingAsync();
+            StopButton.Visibility = Visibility.Collapsed;
+            StartButton.Visibility = Visibility.Visible;
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

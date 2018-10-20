@@ -4,38 +4,59 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheBuildingsEyes"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        mc:Ignorable="d" Background="#4A4A4A"
+        Title="">
+    <Window.Resources>
+        <ResourceDictionary>
+            <BitmapImage x:Key="residentcard" UriSource="Data/card-resident.png" />
+            <BitmapImage x:Key="visitorcard" UriSource="Data/card-visitor.png" />
+            <BitmapImage x:Key="packagecard" UriSource="Data/card-notification.png" />
+            <Style x:Key="SomeButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="{TemplateBinding Background}">
+                                <ContentPresenter />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="360" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="35" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Image x:Name="RightImage" Grid.Column="0" Margin="5" Panel.ZIndex="1" />
-            <StackPanel Grid.Column="1" Height="500">
-                <DockPanel Grid.Column="1" Grid.Row="1" DockPanel.Dock="Top" LastChildFill="True">
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                        <Button Content="Start Camera" Padding="5,0" Margin="5,5,0,5" Click="StartButton_Click" />
-                        <Button Content="Stop Camera" Padding="5,0" Margin="5,5,0,5" Click="StopButton_Click" />
-                    </StackPanel>
-                    <StackPanel>
-                        <TextBlock FontSize="25" Margin="5" VerticalAlignment="Center">Name: </TextBlock>
-                        <TextBlock FontSize="25" Name="NameTextBlock" Margin="5" VerticalAlignment="Center" />
-                        <TextBlock FontSize="25" Margin="5" VerticalAlignment="Center">Floor: </TextBlock>
-                        <TextBlock FontSize="25" Name="FloorTextBlock" Margin="5" VerticalAlignment="Center" />
-                        <TextBlock FontSize="25" Margin="5" VerticalAlignment="Center">Status: </TextBlock>
-                        <TextBlock FontSize="25" Name="StatusTextBlock" Margin="5" VerticalAlignment="Center" />
-                    </StackPanel>
-                </DockPanel>
-            </StackPanel>
-        </Grid>
-        <TextBlock Name="MessageArea" Margin="5" Grid.Row="3" VerticalAlignment="Center" />
+        <Image Grid.Column="0" x:Name="RightImage" Margin="-120,0,0,0" Panel.ZIndex="1" />
+        <DockPanel Grid.Column="1" Width="360">
+            <Image Visibility="Collapsed" DockPanel.Dock="Top" Margin="0"
+                   Name="ResidentImage" HorizontalAlignment="Center"
+                   Source="{StaticResource residentcard}" />
+            <Image Visibility="Collapsed" DockPanel.Dock="Top"
+                   Name="PackageImage" HorizontalAlignment="Center"
+                   Source="{StaticResource packagecard}" />
+            <Image Visibility="Collapsed" DockPanel.Dock="Top"
+                   Name="VisitorImage"
+                   Source="{StaticResource visitorcard}" />
+            <Button MaxWidth="300" Content="Camera is off."
+                    HorizontalAlignment="Right" Background="#4A4A4A"
+                    BorderBrush="#4A4A4A" Name="StartButton"
+                    DockPanel.Dock="Bottom" VerticalAlignment="Bottom"
+                    Style="{StaticResource SomeButtonStyle}"
+                    Padding="5,0" Margin="5,5,10,5" Click="StartButton_Click" />
+            <Button MaxWidth="300" Content="Camera is on."
+                    BorderBrush="#4A4A4A" Name="StopButton"
+                    DockPanel.Dock="Bottom" VerticalAlignment="Bottom"
+                    Style="{StaticResource SomeButtonStyle}"
+                    HorizontalAlignment="Right" Background="#4A4A4A"
+                    Padding="5,0" Margin="5,5,10,5" Click="StopButton_Click" />
+        </DockPanel>
+        <!--<TextBlock Name="MessageArea" Margin="5" Grid.Row="3" VerticalAlignment="Center" />-->
     </Grid>
 </Window>
