@@ -29,7 +29,7 @@ namespace TheBuildingsEyes
         const int measurementInterval = 3; // seconds
         private Guid saschaPersonId = Guid.Parse("347e4d82-0e71-4a81-875f-0df089eda70f");
         NotificationHubClient notificationClient = NotificationHubClient
-                .CreateClientFromConnectionString("Endpoint=sb://smartone.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=0tcXJaemth4yv+hO/AMgI9S2H0GVyJoo7lY2DH5k6C4=", "SmarToneNotifications");
+                .CreateClientFromConnectionString("Endpoint=sb://smartone.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=0tcXJaemth4yv+hO/AMgI9S2H0GVyJoo7lY2DH5k6C4=", "SmarToneNotifications", true);
 
         private FaceAPI.FaceServiceClient _faceClient = null;
         private VisionAPI.VisionServiceClient _visionClient = null;
@@ -157,11 +157,12 @@ namespace TheBuildingsEyes
                      }));
                     try
                     {
-                        await notificationClient.SendAppleNativeNotificationAsync("{ \"elevator\": true, \"aircon\": false }");
+                        notificationClient.SendAppleNativeNotificationAsync("{ \"elevator\": true, \"aircon\": false }");
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         // Ignore
+                        var test = "hihi";
                     }
                 }
                 else
@@ -180,11 +181,12 @@ namespace TheBuildingsEyes
                          }));
                         try
                         {
-                            await notificationClient.SendAppleNativeNotificationAsync("{\"aps\":{ \"elevator\": true, \"aircon\": true }}");
+                            await notificationClient.SendAppleNativeNotificationAsync("{\"aps\": { \"content-available\": 1, \"elevator\": true, \"aircon\": true }}");
                         }
-                        catch
+                        catch(Exception ex)
                         {
                             // Ignore
+                            var test = "asdf";
                         }
                     }
                 }
