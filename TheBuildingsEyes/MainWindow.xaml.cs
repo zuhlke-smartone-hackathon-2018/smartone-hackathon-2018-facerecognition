@@ -157,12 +157,11 @@ namespace TheBuildingsEyes
                      }));
                     try
                     {
-                        notificationClient.SendAppleNativeNotificationAsync("{ \"elevator\": true, \"aircon\": false }");
+                        await notificationClient.SendAppleNativeNotificationAsync("{ \"elevator\": true, \"aircon\": false }");
                     }
                     catch(Exception ex)
                     {
                         // Ignore
-                        var test = "hihi";
                     }
                 }
                 else
@@ -186,7 +185,6 @@ namespace TheBuildingsEyes
                         catch(Exception ex)
                         {
                             // Ignore
-                            var test = "asdf";
                         }
                     }
                 }
